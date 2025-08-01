@@ -1,147 +1,130 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
-const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+      setIsScrolled(window.scrollY > 50)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
-  const menuItems = [
-    { title: "브랜드 소개", href: "#brand" },
-    { title: "메뉴", href: "#menu" },
-    { title: "창업 안내", href: "#franchise" },
-    { title: "가맹점 찾기", href: "#locations" },
-    { title: "문의하기", href: "#contact" },
-  ];
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+    setIsMobileMenuOpen(false)
+  }
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-white shadow-lg"
-          : "bg-transparent"
-      )}
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'
+      }`}
     >
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 lg:h-20">
-          <Link href="/" className="flex items-center space-x-2">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className={cn(
-                "text-2xl font-bold",
-                isScrolled ? "text-project-primary" : "text-white"
-              )}
-            >
-              황금쭈꾸미집
-            </motion.div>
-          </Link>
-
-          <div className="hidden lg:flex items-center space-x-8">
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "font-medium transition-colors hover:text-project-primary",
-                    isScrolled ? "text-gray-700" : "text-white"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <Link
-                href="#franchise"
-                className="bg-project-primary text-white px-6 py-2 rounded-full hover:bg-project-primary-dark transition-colors"
-              >
-                창업문의
-              </Link>
-            </motion.div>
+          {/* Logo */}
+          <div className="flex items-center">
+            <Image
+              src="/files/e9c9fbfb95f43.png"
+              alt="황금쭈꾸미집"
+              width={150}
+              height={40}
+              className="h-8 lg:h-10 w-auto"
+              priority
+            />
           </div>
 
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            <button
+              onClick={() => scrollToSection('hero')}
+              className={`font-medium transition-colors ${
+                isScrolled ? 'text-gray-900 hover:text-brand-red' : 'text-white hover:text-brand-gold'
+              }`}
+            >
+              브랜드소개
+            </button>
+            <button
+              onClick={() => scrollToSection('about')}
+              className={`font-medium transition-colors ${
+                isScrolled ? 'text-gray-900 hover:text-brand-red' : 'text-white hover:text-brand-gold'
+              }`}
+            >
+              경쟁력
+            </button>
+            <button
+              onClick={() => scrollToSection('menu')}
+              className={`font-medium transition-colors ${
+                isScrolled ? 'text-gray-900 hover:text-brand-red' : 'text-white hover:text-brand-gold'
+              }`}
+            >
+              메뉴 안내
+            </button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className={`font-medium transition-colors ${
+                isScrolled ? 'text-gray-900 hover:text-brand-red' : 'text-white hover:text-brand-gold'
+              }`}
+            >
+              창업 문의
+            </button>
+          </nav>
+
+          {/* Mobile Menu Button */}
           <button
+            className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={cn(
-              "lg:hidden transition-colors",
-              isScrolled ? "text-gray-700" : "text-white"
-            )}
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <div className="w-6 h-6 flex flex-col justify-center items-center">
+              <span className={`block h-0.5 w-6 bg-current transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-0.5' : ''} ${isScrolled ? 'bg-gray-900' : 'bg-white'}`}></span>
+              <span className={`block h-0.5 w-6 bg-current transition-all mt-1 ${isMobileMenuOpen ? 'opacity-0' : ''} ${isScrolled ? 'bg-gray-900' : 'bg-white'}`}></span>
+              <span className={`block h-0.5 w-6 bg-current transition-all mt-1 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''} ${isScrolled ? 'bg-gray-900' : 'bg-white'}`}></span>
+            </div>
           </button>
         </div>
-      </nav>
 
-      <AnimatePresence>
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white shadow-lg"
-          >
-            <div className="px-4 py-4 space-y-3">
-              {menuItems.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <Link
-                    href={item.href}
-                    className="block py-2 text-gray-700 hover:text-project-primary transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.title}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.25 }}
+          <div className="lg:hidden bg-white border-t">
+            <nav className="py-4 space-y-2">
+              <button
+                onClick={() => scrollToSection('hero')}
+                className="block w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-50"
               >
-                <Link
-                  href="#franchise"
-                  className="block w-full text-center bg-project-primary text-white px-6 py-3 rounded-full hover:bg-project-primary-dark transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  창업문의
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
+                브랜드소개
+              </button>
+              <button
+                onClick={() => scrollToSection('about')}
+                className="block w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-50"
+              >
+                경쟁력
+              </button>
+              <button
+                onClick={() => scrollToSection('menu')}
+                className="block w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-50"
+              >
+                메뉴 안내
+              </button>
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="block w-full text-left px-4 py-2 text-gray-900 hover:bg-gray-50"
+              >
+                창업 문의
+              </button>
+            </nav>
+          </div>
         )}
-      </AnimatePresence>
+      </div>
     </header>
-  );
-};
-
-export default Header;
+  )
+}

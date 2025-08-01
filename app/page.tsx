@@ -1,19 +1,17 @@
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
-import PricingSection from "@/components/PricingSection";
-import FAQSection from "@/components/FAQSection";
-import Footer from "@/components/Footer";
+import Header from '@/components/Header'
+import HeroSection from '@/components/HeroSection'
+import AboutSection from '@/components/AboutSection'
+import MenuSection from '@/components/MenuSection'
+import ContactSection from '@/components/ContactSection'
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Header />
       <HeroSection />
-      <FeaturesSection />
-      <PricingSection />
-      <FAQSection />
-      <Footer />
+      <AboutSection />
+      <MenuSection />
+      <ContactSection />
     </main>
-  );
+  )
 }
